@@ -17,8 +17,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>demoiselle-contrib</groupId>
-			<artifactId>demoiselle-${rootArtifactId}</artifactId>
-			<version>${version}</version>
+			<artifactId>demoiselle-fuselage</artifactId>
+			<version>2.2.1</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
