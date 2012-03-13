@@ -3,9 +3,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
 	<packaging>war</packaging>
+	<groupId>${groupId}</groupId>
 	<version>${version}</version>
 
 	<parent>
