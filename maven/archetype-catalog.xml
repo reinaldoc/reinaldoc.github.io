@@ -5,6 +5,12 @@
         <archetype>
             <groupId>demoiselle-contrib</groupId>
             <artifactId>fuselage-archetype</artifactId>
+            <version>2.2.2</version>
+            <repository>http://reinaldoc.github.com/maven</repository>
+        </archetype>
+        <archetype>
+            <groupId>demoiselle-contrib</groupId>
+            <artifactId>fuselage-archetype</artifactId>
             <version>2.2.1</version>
             <repository>http://reinaldoc.github.com/maven</repository>
         </archetype>
