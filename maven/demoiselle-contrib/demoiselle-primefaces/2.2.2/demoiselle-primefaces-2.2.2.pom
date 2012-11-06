@@ -54,7 +54,7 @@
 
 	<properties>
 		<category>Outros</category>
-		<primefaces.version>3.0.1</primefaces.version>
+		<primefaces.version>3.3</primefaces.version>
 		<maven.install.plugin.version>2.3.1</maven.install.plugin.version>
 	</properties>
 
