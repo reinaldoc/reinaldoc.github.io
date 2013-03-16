@@ -7,13 +7,8 @@
 	<packaging>jar</packaging>
 
 	<name>demoiselle-fonts-droidsans</name>
-	<url>http://demoiselle.sourceforge.net/component/${project.artifactId}/${project.version}</url>
+	<url>http://github.com/reinaldoc/demoiselle-contrib</url>
 	<description>Font DroidSans</description>
-
-	<properties>
-		<category>Outros</category>
-		<maven.install.plugin.version>2.3.1</maven.install.plugin.version>
-	</properties>
 
 	<repositories>
 		<repository>
