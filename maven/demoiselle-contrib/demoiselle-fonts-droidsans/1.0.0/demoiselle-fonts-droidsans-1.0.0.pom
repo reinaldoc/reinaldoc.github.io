@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>demoiselle-contrib</groupId>
+	<artifactId>demoiselle-fonts-droidsans</artifactId>
+	<packaging>jar</packaging>
+
+	<name>demoiselle-fonts-droidsans</name>
+	<url>http://demoiselle.sourceforge.net/component/${project.artifactId}/${project.version}</url>
+	<description>Font DroidSans</description>
+
+	<properties>
+		<category>Outros</category>
+		<maven.install.plugin.version>2.3.1</maven.install.plugin.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>reinaldoc-repo</id>
+			<name>Reinaldo Github Maven Repository</name>
+			<url>http://reinaldoc.github.com/maven</url>
+		</repository>
+	</repositories>
+
+</project>
+
