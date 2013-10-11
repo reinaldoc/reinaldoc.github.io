@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
 # Maven Repository Path
-REPOPATH=/opt/git/reinaldoc.github.com/maven
+REPOPATH=/opt/github/reinaldoc.github.io/maven
 
 # pom.xml Relative path inside jar file
 POMPATH=pom.xml
