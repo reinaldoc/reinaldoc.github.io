@@ -51,7 +51,8 @@ function image_build_and_push() {
 function manage_workdir() {
   case "${1}" in
      create)
-       mkdir -p hub-workdir
+       mkdir -p hub-workdir 2>/dev/null
+       test ${?} -eq 0 || { echo "Current directory isn't writable. Exiting..." ; exit ;}
        cd hub-workdir
      ;;
      delete)
