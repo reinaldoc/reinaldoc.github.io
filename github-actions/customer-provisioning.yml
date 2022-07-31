@@ -1,0 +1,87 @@
+# Workflow name
+name: Customer Provisioning
+
+# Set concurrency to enqueue events
+concurrency: enable_workflow_queue_group_1
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow from API request
+  # Workflow catches only listed event_type values
+  repository_dispatch:
+    types:
+      - new_service
+      - suspend_service
+      - unsuspend_service
+      - update_domain
+      - add_ssh_public_key
+      - remove_ssh_public_key
+      - update_ssh_public_key
+      - cancel_service
+      - upgrade_service
+      - downgrade_service
+
+# Just one job at this time
+jobs:
+
+  # Job name
+  Job-Customer-Provisioning:
+
+    # Github Action runner
+    runs-on: ubuntu-latest
+
+    # Set ENV
+    env:
+      # Required Envs
+      GM_ACTION:      ${{ github.event.action }}
+      GM_PROJECT:     ${{ github.event.client_payload.GM_PROJECT }}
+      GM_CLUSTER:     ${{ github.event.client_payload.GM_CLUSTER }}
+      GM_ZONE:        ${{ github.event.client_payload.GM_ZONE }}
+      GM_SERVICE_ID:  ${{ github.event.client_payload.GM_SERVICE_ID }}
+      GM_DOMAINNAME:  ${{ github.event.client_payload.GM_DOMAINNAME }}
+      GIT_URI:        ${{ github.event.client_payload.GIT_URI }}
+      
+      # Envs for "event_type" = "new_service"
+      GM_MYSQL_USERNAME:      ${{ github.event.client_payload.EXTRA.GM_MYSQL_USERNAME }}
+      GM_MYSQL_DATABASE:      ${{ github.event.client_payload.EXTRA.GM_MYSQL_DATABASE }}
+      GM_MYSQL_PASSWORD:      ${{ github.event.client_payload.EXTRA.GM_MYSQL_PASSWORD }}
+      GM_MYSQL_ROOT_PASSWORD: ${{ github.event.client_payload.EXTRA.GM_MYSQL_ROOT_PASSWORD }}
+      GM_INSTANCE_TYPE:       ${{ github.event.client_payload.EXTRA.GM_INSTANCE_TYPE }}
+      GM_SSH_PORT:            ${{ github.event.client_payload.EXTRA.GM_SSH_PORT }}
+      GM_SSH_PUBLIC_KEYS:     ${{ github.event.client_payload.EXTRA.GM_SSH_PUBLIC_KEYS }}
+      
+      # Envs for "event_type" = "add_ssh_public_key"
+      GM_SSH_KEY_TO_ADD:      ${{ github.event.client_payload.EXTRA.GM_SSH_KEY_TO_ADD }}
+      
+      # Envs for "event_type" = "remove_ssh_public_key"
+      GM_SSH_KEY_TO_REMOVE:   ${{ github.event.client_payload.EXTRA.GM_SSH_KEY_TO_REMOVE }}
+
+    # Tasks
+    steps:
+      - name: Checkout repository as working directory
+        uses: actions/checkout@v3
+
+      - name: Install Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install SOPS
+        uses: mdgreenwald/mozilla-sops-action@v1.2.0
+
+      - name: Set up gcloud authentication
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+
+      - name: Install Cloud SDK (gcloud)
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Create Infraestructure YAML files
+        run: |
+          ssh-keygen -q -f ~/.ssh/google_compute_engine -N ""
+          ./main.sh
