@@ -17,3 +17,8 @@ IDs=$(docker images -qa)
 if [ ! -z "${IDs}" ]; then
    docker image rm --force ${IDs} 2>/dev/null
 fi
+
+docker ps
+docker ps -a
+docker images
+docker images -a
