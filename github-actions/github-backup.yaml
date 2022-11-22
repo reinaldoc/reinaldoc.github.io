@@ -1,0 +1,54 @@
+#
+# Github Action to backup Webera Github repositories.
+# Clone, compress, encrypt and push do Cloud Storage
+#
+
+# Workflow name
+name: Github Backup
+
+# Controls when the workflow will run
+on:
+  # Allows you to run from Github Action tab
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * *'
+
+# Just one job at this time
+jobs:
+
+  # Job name
+  Job-Github-Backup:
+
+    # Github Action runner
+    runs-on: ubuntu-latest
+
+    # Set ENV
+    env:
+      CURL_USER_AND_TOKEN:   ${{ secrets.CURL_USER_AND_TOKEN }}
+
+    # Tasks
+    steps:
+      - name: Checkout repository as working directory
+        uses: actions/checkout@v3
+
+      - name: Set up gcloud authentication
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: "${{ secrets.GCP_SA_BACKUP_BUCKET }}"
+
+      - name: Install Cloud SDK (gcloud)
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Backup Script
+        run: |
+          if [ "$(date +%d)" == "01" ]; then
+            echo "BACKUP_TYPE=monthly" >> $GITHUB_ENV
+          else if [ "$(date +%u)" == "7" ]; then
+            echo "BACKUP_TYPE=weekly" >> $GITHUB_ENV
+          else
+            echo "BACKUP_TYPE=daily" >> $GITHUB_ENV
+          fi
+          echo "${{ secrets.GPG_BACKUP_PUB_KEY }}" > backup-gpg.pub
+          gpg --import backup-gpg.pub
+          ./github-backup.sh ${BACKUP_TYPE}
+
